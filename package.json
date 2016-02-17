@@ -1,0 +1,32 @@
+{
+  "name": "grunt-bust-cache",
+  "description": "Grunt task to automate cache busting",
+  "version": "0.0.0",
+  "author": {
+    "name": "Chris Bricker"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tallbrick/grunt-bust-cache.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "pom-parser": "^1.1.0",
+    "gitty": "^3.3.3"
+  },
+  "peerDependencies": {
+    "grunt": ">=0.4.0"
+  },
+  "keywords": [
+    "gruntplugin",
+    "cache buster",
+    "requirejs"
+  ],
+  "files": [
+    "tasks"
+  ],
+  "bugs": {
+    "url": "https://github.com/tallbrick/grunt-bust-cache/issues"
+  },
+  "homepage": "https://github.com/tallbrick/grunt-bust-cache"
+}
