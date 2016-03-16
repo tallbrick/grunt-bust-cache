@@ -3,7 +3,21 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var CacheBuster, VersionOMatic, pomParser, git;
+  var taskName, taskDescription, defaultOptions, CacheBuster, VersionOMatic, pomParser, git;
+
+  taskName = 'cacheBuster';
+
+  taskDescription = 'Updates your files with a version string appended to URLs.';
+
+  defaultOptions = {
+    css: true,
+    requireJs: false,
+    urlKey: "v",
+
+    hashType: "timestamp", // git, npm, maven, timestamp
+    pathToGitRepo: "./",
+    pathToPom: "pom.xml"
+  }
 
   /*
    * Class that updates file content (string) with a version/hash
@@ -72,6 +86,7 @@ module.exports = function(grunt) {
   git = require('gitty');
   pomParser = require("pom-parser");
 
+  //options.hashType: "timestamp", // git, npm, maven, timestamp
   VersionOMatic = function(options){
     this.options = options;
   };
@@ -84,33 +99,37 @@ module.exports = function(grunt) {
 
     options: {},
 
-    get hash() {
-      var hashFunction, hash = false;
+    calcHash(callback){
+      var promises = [], Instance = this,
+      hashFunction, promise, hash = false;
       hashFunction = this.options.hashType;
-      hashFunction = hashFunction.charAt(0).toLowerCase() + hashFunction.slice(1);
+      hashFunction = hashFunction.charAt(0).toUpperCase() + hashFunction.slice(1);
 
-      hash = this[hashFunction+"Hash"];
-      return hash;
+      promises.push( this["get"+hashFunction+"Hash"]() );
+
+      Promise.all(promises).then(callback, grunt.warn);
     },
 
-    get timestampHash() {
-      return Date.now() / 1000 | 0;
+    getTimestampHash() {
+      var timestamp = Date.now() / 1000 | 0;
+      return Promise.resolve( timestamp );
     },
 
-    get npmHash() {
+    getNpmHash() {
       var pkg = grunt.file.readJSON('package.json');
-      return pkg.version;
+      return Promise.resolve( pkg.version );
     },
 
-    get gitHash() {
+    getGitHash() {
       var hash, cmdLastCommit;
       // "git rev-parse --verify HEAD"
       cmdLastCommit = new git.Command(this.options.pathToGitRepo, "rev-parse", ["--verify", "HEAD"]);
       hash = cmdLastCommit.execSync();
-      return hash.replace("\n", '').substr(0,12); // remove newlines, shorten to 12 chars
+      hash = hash.replace("\n", '').substr(0,12); // remove newlines, shorten to 12 chars
+      return Promise.resolve( hash );
     },
 
-    get mavenHash() {
+    getMavenHash() {
       var opts, done, version;
 
       // The required options, including the filePath.
@@ -119,52 +138,44 @@ module.exports = function(grunt) {
         filePath: this.options.pathToPom,
       };
       
-      // Parse the pom based on a path
-      done = this.taskReference.async();
-      pomParser.parse(opts, (err, pomResponse) => {
-        var success = true;
-        if (err) {
-          grunt.log.error(["ERROR: " + err]);
-          process.exit(1);
-          success = false;
-        }else{
-          version = pomResponse.pomObject.project.version;
-          this.writeCacheBustString(version);
-        }
-        done(success);
+      return new Promise(function(resolve, reject) {
+        pomParser.parse(opts, function(err, pomResponse) {
+          if (err) {
+            grunt.log.error(["ERROR: " + err]);
+            return reject(ex);
+          }else{
+            version = pomResponse.pomObject.project.version
+            return resolve( version );
+          }
+        });
       });
-      return version;
     }
   };
 
+  function getVersionHash(resolve, reject, options){
+    var version;
+    try{
+      // Calculate the version/hash
+      version = new VersionOMatic(options);
+      version.calcHash(function(hash) {
+        options.versionString = hash;
+        grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
 
-  /*
-   * Grunt Task
-   */
-  grunt.registerMultiTask('cacheBuster', 'Updates your files with a version string appended to URLs.', function() {
-    var options, version, cacheBuster, filesUpdated = [];
+        resolve( options );
+      });
+    }catch(e){
+      reject(e);
+    }
+  }
 
-    options = this.options({
-      css: true,
-      requireJs: false,
-      urlKey: "v",
-
-      hashType: "timestamp", // git, npm, maven, timestamp
-      pathToGitRepo: "./",
-      pathToPom: "pom.xml"
-    });
-
-    // Calculate the version/hash
-    version = new VersionOMatic(options);
-    options.versionString = version.hash;
-    grunt.log.writeln(["cache-buster suffix: "+ options.versionString]);
+  function updateFiles(options){
+    var cacheBuster, filesUpdated = [], message;
 
     // Update the files to include the version/hash
     cacheBuster = new CacheBuster(options);
-    cacheBuster.taskReference = this;
 
-    this.files.forEach(function(filePair) {
-      filePair.src.forEach(function(src) {
+    this.files.forEach((filePair) => {
+      filePair.src.forEach((src) => {
         var dest, fileContent;
 
         if ( grunt.file.exists(src) ) {
@@ -183,6 +194,30 @@ module.exports = function(grunt) {
       });
     });
 
-    grunt.log.writeln(["Files Updated: "+ filesUpdated.join('\n')]);
+    if( filesUpdated.length > 0 ){
+      message = "Files Updated: "+ filesUpdated.join('\n');
+    }else{
+      message = "No Files updated";
+    }
+    grunt.log.writeln([message]);
+  }
+
+
+  /*
+   * Grunt Task
+   */
+  grunt.registerMultiTask(taskName, taskDescription, function() {
+    var options;
+    options = this.options(defaultOptions);
+
+    new Promise(function (resolve, reject) {
+      getVersionHash(resolve, reject, options);
+    })
+
+    // Update the files to include the version/hash
+    .then(() => { updateFiles.call(this, options); })
+
+    // Signal to grunt that the task is done
+    .then(this.async(), grunt.warn);
   });
 };
