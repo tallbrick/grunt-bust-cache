@@ -3,9 +3,9 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var taskName, taskDescription, defaultOptions, CacheBuster, VersionOMatic;
+  var taskName, taskDescription, defaultOptions, VersionOMatic, CacheBuster;
 
-  taskName = 'cacheBuster';
+  taskName = 'bustCache';
 
   taskDescription = 'Updates your files with a version string appended to URLs.';
 
