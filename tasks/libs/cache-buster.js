@@ -20,7 +20,7 @@ module.exports = function(grunt) {
       urlKey: "v",
       requireJs: false,
       javascript: true,
-      css: false,
+      css: true,
       versionString: ""
     },
 

@@ -39,23 +39,51 @@ bustCache: {
 
 ```
 // Here is a short summary of the options and some of their 
-defaults. Extra details are below.
+// defaults. Extra details are below.
 {
-  css: true,                             // Algoirthm used for hashing files
-  requireJs: false,                      // Algoirthm used for hashing files
-  urlKey: "v",                           // Algoirthm used for hashing files
+  css: true,                   // Add hash string to CSS includes
+  javascript: true,            // Add hash string to JS includes
+  requireJs: false,            // Add requirejs config which includes hash string
+  urlKey: "v",                 // Querystring variable name to contain the hash
 
-  hashType: "timestamp",                 // git, npm, maven, timestamp
-  pathToGitRepo: "./",                   // Algoirthm used for hashing files
-  pathToPom: "pom.xml"                   // Algoirthm used for hashing files
+  hashType: "timestamp",       // Hash type.  Values include: git, npm, maven, timestamp
+  pathToGitRepo: "./",         // Location of the git repo (used in finding the git SHA-1 hash)
+  pathToPom: "./pom.xml"       // Localtion of the (used in finding the Maven project verison)
 }
 ```
+
+#### options.css
+Type: `Boolean`  
+Default value: `true`
+
+When set to `true`, `bustCache` will add a version hash to all CSS `<link>` tags.
+
+#### options.javascript
+Type: `Boolean`  
+Default value: `true`
+
+When set to `true`, `bustCache` will add a version hash to all JavaScript `<script>` tags.
+
+#### options.requireJs
+Type: `Boolean`  
+Default value: `false`
+
+When set to `true`, `bustCache` will add a RequireJs config block that sets the `urlArgs` to the version hash.
+Learn more about [RequireJs urlsArgs parameter](http://requirejs.org/docs/api.html#config-urlArgs).
 
 #### options.hashType
 Type: `String`  
 Default value: `'timestamp'`
+Possible values: `'git'`, `'npm'`, `'maven'`, `'timestamp'`
 
-Possible values include `'git'`, `'npm'`, `'maven'`, `'timestamp'`
+**timestamp:** runs simple JavaScript during the build to generate a unique hash
+
+**git:** queries git for the latest commit hash using: `git rev-parse --verify HEAD`
+
+**npm:** opens the `project.json` file to get the project version
+
+**maven:** opens the `pom.xml` to get the project version
+
 
 ## Credits
 This plugin was inspired by [grunt-cache-bust](https://github.com/hollandben/grunt-cache-bust)
