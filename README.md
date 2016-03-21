@@ -1,12 +1,15 @@
 # grunt-bust-cache
 > Grunt task to automate cache busting 
 
+
 ### Getting Started
 This plugin requires Node `~0.12` and Grunt `~0.4.0`
+
 
 ### The "bustCache" task
 
 Use the `bustCache` task for cache busting static files in your application. This allows the assets to have a large expiry time in the browsers cache and will only be forced to use an updated file when the contents of it changes.
+
 
 ### Example Usage
 
