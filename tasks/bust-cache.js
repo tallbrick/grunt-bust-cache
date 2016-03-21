@@ -23,7 +23,7 @@ module.exports = function(grunt) {
   VersionOMatic = require('./libs/version-o-matic')(grunt);
 
   function promiseToGetVersion(options){
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       var version;
       try{
         // Calculate the version/hash
@@ -49,8 +49,8 @@ module.exports = function(grunt) {
     // Update the files to include the version/hash
     cacheBuster = new CacheBuster(options);
 
-    this.files.forEach((filePair) => {
-      filePair.src.forEach((src) => {
+    this.files.forEach(function(filePair) {
+      filePair.src.forEach(function(src) {
         var dest, fileContent;
 
         if ( grunt.file.exists(src) ) {
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
 
     promiseToGetVersion(options)
 
-    .then(()=>{ updateFiles.call(this, options) }) // Update the files to include the version/hash
+    .then(function(){ updateFiles.call(this, options) }) // Update the files to include the version/hash
 
     .then(this.async(), grunt.warn) // Signal to grunt that the task is done
 

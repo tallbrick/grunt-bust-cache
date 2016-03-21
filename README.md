@@ -1,12 +1,15 @@
 # grunt-bust-cache
 > Grunt task to automate cache busting 
 
+
 ### Getting Started
 This plugin requires Node `~0.12` and Grunt `~0.4.0`
+
 
 ### The "bustCache" task
 
 Use the `bustCache` task for cache busting static files in your application. This allows the assets to have a large expiry time in the browsers cache and will only be forced to use an updated file when the contents of it changes.
+
 
 ### Example Usage
 
@@ -40,7 +43,7 @@ bustCache: {
 ```
 // Here is a short summary of the options and some of their 
 // defaults. Extra details are below.
-{
+options: {
   css: true,                   // Add hash string to CSS includes
   javascript: true,            // Add hash string to JS includes
   requireJs: false,            // Add requirejs config which includes hash string
@@ -73,16 +76,16 @@ Learn more about [RequireJs urlsArgs parameter](http://requirejs.org/docs/api.ht
 
 #### options.hashType
 Type: `String`  
-Default value: `'timestamp'`
+Default value: `'timestamp'` 
 Possible values: `'git'`, `'npm'`, `'maven'`, `'timestamp'`
 
-**timestamp:** runs simple JavaScript during the build to generate a unique hash
+* **timestamp:** runs simple JavaScript during the build to generate a unique hash
 
-**git:** queries git for the latest commit hash using: `git rev-parse --verify HEAD`
+* **git:** queries git for the latest commit hash using: `git rev-parse --verify HEAD`
 
-**npm:** opens the `project.json` file to get the project version
+* **npm:** opens the `project.json` file to get the project version
 
-**maven:** opens the `pom.xml` to get the project version
+* **maven:** opens the `pom.xml` to get the project version
 
 
 ## Credits
