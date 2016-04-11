@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       pathToPom: "pom.xml"
     },
 
-    calcHash(callback){
+    calcHash: function(callback) {
       var promises = [], Instance = this,
       hashFunction, promise, hash = false;
       hashFunction = this.options.hashType;
@@ -42,17 +42,17 @@ module.exports = function(grunt) {
       Promise.all(promises).then(callback, grunt.warn);
     },
 
-    getTimestampHash() {
+    getTimestampHash: function() {
       var timestamp = Date.now() / 1000 | 0;
       return Promise.resolve( timestamp );
     },
 
-    getNpmHash() {
+    getNpmHash: function() {
       var pkg = grunt.file.readJSON('package.json');
       return Promise.resolve( pkg.version );
     },
 
-    getGitHash() {
+    getGitHash: function() {
       var hash, cmdLastCommit;
       // "git rev-parse --verify HEAD"
       cmdLastCommit = new git.Command(this.options.pathToGitRepo, "rev-parse", ["--verify", "HEAD"]);
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
       return Promise.resolve( hash );
     },
 
-    getMavenHash() {
+    getMavenHash: function() {
       var opts, done, version;
 
       // The required options, including the filePath.

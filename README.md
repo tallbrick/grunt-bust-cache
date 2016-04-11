@@ -1,14 +1,26 @@
 # grunt-bust-cache
-> Grunt task to automate cache busting 
+> Grunt task to automate your cache bust configuration
 
 
 ### Getting Started
 This plugin requires Node `~0.12` and Grunt `~0.4.0`
 
 
+### Install
+
+```
+$ npm install --save-dev grunt-bust-cache
+```
+
+
 ### The "bustCache" task
 
 Use the `bustCache` task for cache busting static files in your application. This allows the assets to have a large expiry time in the browsers cache and will only be forced to use an updated file when the contents of it changes.
+
+This plugin supports:
+
+* Hash calculation is multiple formats
+* Multiple cache bust methods (including RequireJS's urlArgs)
 
 
 ### Example Usage
@@ -35,6 +47,7 @@ bustCache: {
   }
 }
 ```
+
 
 ### Options
 
