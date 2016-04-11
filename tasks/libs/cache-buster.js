@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       versionString: ""
     },
 
-    updateFileContent(fileContent) {
+    updateFileContent: function(fileContent) {
       
       if(this.options.requireJs){
         fileContent = this.bustRequireJs(fileContent);
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     },
 
     // Add requirejs config which includes hash string
-    bustRequireJs(fileContent) {
+    bustRequireJs: function(fileContent) {
       var hash;
       hash = '<script>var require = { urlArgs: "'+ this.options.urlKey +'='+ this.options.versionString+'" };</script>';
       fileContent = fileContent.replace(/(<script data-main=(.*(require.js)*.)><\/script>)/gim, hash +"$1");
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     },
 
     // Add hash string to JS includes
-    bustJavaScript(fileContent) {
+    bustJavaScript: function(fileContent) {
       var hash;   
       hash = '?'+this.options.urlKey+'='+ this.options.versionString;
       fileContent = fileContent.replace(/(<script.*)(\w+\.js)(.*>.*<\/script>)/gim, "$1$2"+ hash +"$3");
@@ -58,7 +58,7 @@ module.exports = function(grunt) {
     },
 
     // Add hash string to CSS includes
-    bustCss(fileContent) {
+    bustCss: function(fileContent) {
       var hash;   
       hash = '?'+this.options.urlKey+'='+ this.options.versionString;
       fileContent = fileContent.replace(/(<link.*)(\w+\.css)(.*\/>)/gim, "$1$2"+ hash +"$3");
