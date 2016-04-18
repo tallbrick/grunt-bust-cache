@@ -49,6 +49,25 @@ bustCache: {
 ```
 
 
+### Supported File Paths
+
+```
+bustCache: {
+  foo: {
+    // Path to a single file
+    src: "path/to/your/projects/index.html"
+  },
+  bar: {
+    // Specify both source and destination
+    files: [
+      src: "path/to/your/source/file.html",
+      dest: "path/to/your/destination/file.html"
+    ]
+  }
+}
+```
+
+
 ### Options
 
 #### Summary
