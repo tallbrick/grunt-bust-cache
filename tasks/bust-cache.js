@@ -82,26 +82,18 @@ module.exports = function(grunt) {
    * Grunt Task
    */
   grunt.registerMultiTask(taskName, taskDescription, function() {
-    var options, files, entry;
+    var options, files = this.files;
     options = this.options(defaultOptions);
 
     // Set the files object
-    if(options.src !== undefined && options.files === undefined){
-      entry = {src: options.src};
-      if(options.dest !== undefined){
-        entry.dest = options.dest;
+    if(this.files.length === 0){
+      if(options.src !== undefined || options.files === undefined || options.files !== undefined){
+        grunt.log.error(["Configuration Error:"]);
+        grunt.log.error(["It looks like you may have defined your file paths in the options object - this won't work."]);
+        grunt.log.error(["Instead, move the file paths out to the task-config block."]);
       }
-      options.files = [];
-      options.files.push(entry);
+      grunt.fail.warn('The `files` array was empty.');
     }
-
-    if(options.files !== undefined){
-      files = options.files.map(function (file) {
-        if( !Array.isArray(file.src) ){ file.src = [file.src]; }
-        return file;
-      });
-    }
-
 
     // Perform the task
     getVersion(options)

@@ -59,9 +59,16 @@ bustCache: {
   },
   bar: {
     // Specify both source and destination
+    src: "path/to/your/source/file.html", // Can be string or array
+    dest: "path/to/your/destination/file.html"
+  },
+  baz: {
+    // Specify multiple file pairs
     files: [
-      src: "path/to/your/source/file.html",
-      dest: "path/to/your/destination/file.html"
+      {
+        src: "path/to/your/source/file.html",
+        dest: "path/to/your/destination/file.html"
+      }
     ]
   }
 }
