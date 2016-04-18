@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var taskName, taskDescription, defaultOptions, VersionMaker, CacheBuster;
+  var taskName, taskDescription, defaultOptions, VersionOMatic, CacheBuster;
 
   taskName = 'bustCache';
 
@@ -20,14 +20,14 @@ module.exports = function(grunt) {
   };
 
 
-  VersionMaker = require('./libs/version-maker')(grunt);
+  VersionOMatic = require('./libs/version-o-matic')(grunt);
 
   function getVersion(options){
     return new Promise(function(resolve, reject) {
       var version;
       try{
         // Calculate the version/hash
-        version = new VersionMaker(options);
+        version = new VersionOMatic(options);
         version.calcHash(function(hash) {
           options.versionString = hash;
           grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
@@ -82,16 +82,26 @@ module.exports = function(grunt) {
    * Grunt Task
    */
   grunt.registerMultiTask(taskName, taskDescription, function() {
-    var options, files;
+    var options, files, entry;
     options = this.options(defaultOptions);
 
-    // Normalize the files object
-    files = options.files.map(function (file) {
-      if( !Array.isArray(file.src) ){ 
-        file.src = [file.src];
+    // Set the files object
+    if(options.src !== undefined && options.files === undefined){
+      entry = {src: options.src};
+      if(options.dest !== undefined){
+        entry.dest = options.dest;
       }
-      return file;
-    });
+      options.files = [];
+      options.files.push(entry);
+    }
+
+    if(options.files !== undefined){
+      files = options.files.map(function (file) {
+        if( !Array.isArray(file.src) ){ file.src = [file.src]; }
+        return file;
+      });
+    }
+
 
     // Perform the task
     getVersion(options)
