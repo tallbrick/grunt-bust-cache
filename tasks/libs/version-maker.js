@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var VersionOMatic, git, pomParser;
+  var VersionMaker, git, pomParser;
 
   git = require('gitty');
   pomParser = require("pom-parser");
@@ -11,13 +11,13 @@ module.exports = function(grunt) {
   /*
    * Class the creates different types of hash strings
    */
-  VersionOMatic = function(options){
+  VersionMaker = function(options){
     this.options = options;
   };
 
-  VersionOMatic.prototype = {
+  VersionMaker.prototype = {
 
-    constructor: VersionOMatic,
+    constructor: VersionMaker,
 
     taskReference: null,
 
@@ -84,5 +84,5 @@ module.exports = function(grunt) {
     }
   };
 
-  return VersionOMatic;
+  return VersionMaker;
 };
