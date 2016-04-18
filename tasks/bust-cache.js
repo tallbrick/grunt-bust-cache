@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var taskName, taskDescription, defaultOptions, VersionOMatic, CacheBuster;
+  var taskName, taskDescription, defaultOptions, VersionMaker, CacheBuster;
 
   taskName = 'bustCache';
 
@@ -20,14 +20,14 @@ module.exports = function(grunt) {
   };
 
 
-  VersionOMatic = require('./libs/version-o-matic')(grunt);
+  VersionMaker = require('./libs/version-maker')(grunt);
 
-  function promiseToGetVersion(options){
+  function getVersion(options){
     return new Promise(function(resolve, reject) {
       var version;
       try{
         // Calculate the version/hash
-        version = new VersionOMatic(options);
+        version = new VersionMaker(options);
         version.calcHash(function(hash) {
           options.versionString = hash;
           grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
@@ -43,18 +43,18 @@ module.exports = function(grunt) {
   
   CacheBuster = require('./libs/cache-buster')(grunt);
 
-  function updateFiles(options){
+  function updateFiles(options, files){
     var cacheBuster, filesUpdated = [], message;
 
     // Update the files to include the version/hash
     cacheBuster = new CacheBuster(options);
-
-    this.files.forEach(function(filePair) {
+    
+    files.forEach(function(filePair) {
       filePair.src.forEach(function(src) {
         var dest, fileContent;
 
         if ( grunt.file.exists(src) ) {
-          if (filePair.dest !== undefined && grunt.file.exists(filePair.dest)) {
+          if (filePair.dest !== undefined) {
             dest = filePair.dest;
           } else {
             dest = src;
@@ -82,12 +82,21 @@ module.exports = function(grunt) {
    * Grunt Task
    */
   grunt.registerMultiTask(taskName, taskDescription, function() {
-    var options;
+    var options, files;
     options = this.options(defaultOptions);
 
-    promiseToGetVersion(options)
+    // Normalize the files object
+    files = options.files.map(function (file) {
+      if( !Array.isArray(file.src) ){ 
+        file.src = [file.src];
+      }
+      return file;
+    });
 
-    .then(function(){ updateFiles.call(this, options) }) // Update the files to include the version/hash
+    // Perform the task
+    getVersion(options)
+
+    .then(function(){ updateFiles.call(this, options, files) }) // Update the files to include the version/hash
 
     .then(this.async(), grunt.warn) // Signal to grunt that the task is done
 
