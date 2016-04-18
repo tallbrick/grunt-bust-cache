@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var taskName, taskDescription, defaultOptions, VersionOMatic, CacheBuster;
+  var taskName, taskDescription, defaultOptions, VersionMaker, CacheBuster;
 
   taskName = 'bustCache';
 
@@ -20,14 +20,14 @@ module.exports = function(grunt) {
   };
 
 
-  VersionOMatic = require('./libs/version-o-matic')(grunt);
+  VersionMaker = require('./libs/version-maker')(grunt);
 
   function getVersion(options){
     return new Promise(function(resolve, reject) {
       var version;
       try{
         // Calculate the version/hash
-        version = new VersionOMatic(options);
+        version = new VersionMaker(options);
         version.calcHash(function(hash) {
           options.versionString = hash;
           grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
