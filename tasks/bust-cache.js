@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
   VersionOMatic = require('./libs/version-o-matic')(grunt);
 
-  function promiseToGetVersion(options){
+  function getVersion(options){
     return new Promise(function(resolve, reject) {
       var version;
       try{
@@ -43,18 +43,18 @@ module.exports = function(grunt) {
   
   CacheBuster = require('./libs/cache-buster')(grunt);
 
-  function updateFiles(options){
+  function updateFiles(options, files){
     var cacheBuster, filesUpdated = [], message;
 
     // Update the files to include the version/hash
     cacheBuster = new CacheBuster(options);
-
-    this.files.forEach(function(filePair) {
+    
+    files.forEach(function(filePair) {
       filePair.src.forEach(function(src) {
         var dest, fileContent;
 
         if ( grunt.file.exists(src) ) {
-          if (filePair.dest !== undefined && grunt.file.exists(filePair.dest)) {
+          if (filePair.dest !== undefined) {
             dest = filePair.dest;
           } else {
             dest = src;
@@ -82,12 +82,31 @@ module.exports = function(grunt) {
    * Grunt Task
    */
   grunt.registerMultiTask(taskName, taskDescription, function() {
-    var options;
+    var options, files, entry;
     options = this.options(defaultOptions);
 
-    promiseToGetVersion(options)
+    // Set the files object
+    if(options.src !== undefined && options.files === undefined){
+      entry = {src: options.src};
+      if(options.dest !== undefined){
+        entry.dest = options.dest;
+      }
+      options.files = [];
+      options.files.push(entry);
+    }
 
-    .then(function(){ updateFiles.call(this, options) }) // Update the files to include the version/hash
+    if(options.files !== undefined){
+      files = options.files.map(function (file) {
+        if( !Array.isArray(file.src) ){ file.src = [file.src]; }
+        return file;
+      });
+    }
+
+
+    // Perform the task
+    getVersion(options)
+
+    .then(function(){ updateFiles.call(this, options, files) }) // Update the files to include the version/hash
 
     .then(this.async(), grunt.warn) // Signal to grunt that the task is done
 

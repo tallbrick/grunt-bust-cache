@@ -1,5 +1,5 @@
 # grunt-bust-cache
-> Grunt task to automate your cache bust configuration
+> Grunt task to automate your cache-bust configuration
 
 
 ### Getting Started
@@ -19,7 +19,7 @@ Use the `bustCache` task for cache busting static files in your application. Thi
 
 This plugin supports:
 
-* Hash calculation is multiple formats
+* Hash calculation in multiple formats
 * Multiple cache bust methods (including RequireJS's urlArgs)
 
 
@@ -44,6 +44,25 @@ bustCache: {
       javascript: false
     },
     src: "path/to/your/projects/index.html"
+  }
+}
+```
+
+
+### Supported File Paths
+
+```
+bustCache: {
+  foo: {
+    // Path to a single file
+    src: "path/to/your/projects/index.html"
+  },
+  bar: {
+    // Specify both source and destination
+    files: [
+      src: "path/to/your/source/file.html",
+      dest: "path/to/your/destination/file.html"
+    ]
   }
 }
 ```
