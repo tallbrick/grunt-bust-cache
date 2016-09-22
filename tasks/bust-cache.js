@@ -16,7 +16,8 @@ module.exports = function(grunt) {
 
     hashType: "timestamp", // git, npm, maven, timestamp
     pathToGitRepo: "./",
-    pathToPom: "pom.xml"
+    pathToPom: "./pom.xml",
+    pathToNpm: "./package.json"
   };
 
 
@@ -98,7 +99,7 @@ module.exports = function(grunt) {
     // Perform the task
     getVersion(options)
 
-    .then(function(){ updateFiles.call(this, options, files) }) // Update the files to include the version/hash
+    .then(function(){ updateFiles.call(this, options, files); }) // Update the files to include the version/hash
 
     .then(this.async(), grunt.warn) // Signal to grunt that the task is done
 

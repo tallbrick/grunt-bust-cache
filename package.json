@@ -14,6 +14,14 @@
     "pom-parser": "^1.1.0",
     "gitty": "^3.3.3"
   },
+  "devDependencies": {
+    "grunt": "^1.0.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-mocha-test": "^0.12.0",
+    "mocha": "^2.4.5"
+  },
   "peerDependencies": {
     "grunt": ">=0.4.0"
   },
@@ -22,8 +30,20 @@
     "cache buster",
     "requirejs",
     "javascript",
-    "css"
+    "css",
+    "replace",
+    "replacement",
+    "version",
+    "pom",
+    "npm",
+    "cache",
+    "bust",
+    "git",
+    "timestamp"
   ],
+  "scripts": {
+    "test": "grunt test"
+  },
   "files": [
     "tasks"
   ],

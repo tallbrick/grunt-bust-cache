@@ -1,6 +1,6 @@
 /*jshint node: true, esversion: 6, bitwise: false */
 
-module.exports = function(grunt) {
+module.exports = function() {
   'use strict';
   
   var CacheBuster;
