@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
   'use strict';
   
-  var taskName, taskDescription, defaultOptions, VersionMaker, CacheBuster;
+  var taskName, taskDescription, defaultOptions, VersionMaker, StringReplacer;
 
   taskName = 'bustCache';
 
@@ -44,13 +44,13 @@ module.exports = function(grunt) {
   }
 
   
-  CacheBuster = require('./libs/cache-buster')(grunt);
+  StringReplacer = require('./libs/string-replacer')(grunt);
 
   function updateFiles(options, files){
-    var cacheBuster, filesUpdated = [], message;
+    var replacer, filesUpdated = [], message;
 
     // Update the files to include the version/hash
-    cacheBuster = new CacheBuster(options);
+    replacer = new StringReplacer(options);
     
     files.forEach(function(filePair) {
       filePair.src.forEach(function(src) {
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
           }
 
           fileContent = grunt.file.read(src);
-          fileContent = cacheBuster.updateFileContent(fileContent);
+          fileContent = replacer.updateFileContent(fileContent);
           
           grunt.file.write(dest, fileContent);
           filesUpdated.push(dest);
