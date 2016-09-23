@@ -2,11 +2,12 @@
 'use strict';
 
 module.exports = function(grunt) {
-  
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks("gruntify-eslint");
   grunt.loadTasks('tasks');
 
   grunt.initConfig({
@@ -44,6 +45,15 @@ module.exports = function(grunt) {
       test: {
         src: ['<%= pathTo.tests %>/**/*.js']
       }
+    },
+
+    eslint: {
+      options: {
+        //silent: true,
+        //rulePaths: ["./.eslintrc"]
+        useEslintrc: true
+      },
+      src: ['<%= pathTo.tasks %>/**/*.js']
     },
 
     clean: {
@@ -155,6 +165,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['clean', 'copy', 'mochaTest']);
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['jshint', 'eslint', 'test']);
 
 };
