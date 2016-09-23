@@ -1,4 +1,4 @@
-# grunt-bust-cache
+# grunt-bust-cache [![Build Status](https://travis-ci.org/tallbrick/grunt-bust-cache.svg?branch=master)](https://travis-ci.org/tallbrick/grunt-bust-cache)
 > Grunt task to automate your cache-bust configuration
 
 
@@ -41,7 +41,7 @@ bustCache: {
       hashType: "maven", // git, npm, maven, timestamp
       css: true,
       requireJs: true,
-      javascript: false
+      javascript: true
     },
     src: "path/to/your/projects/index.html"
   }
@@ -126,6 +126,9 @@ Possible values: `'git'`, `'npm'`, `'maven'`, `'timestamp'`
 
 * **maven:** opens the `pom.xml` to get the project version
 
+
+## Alternatives
+https://www.npmjs.com/package/grunt-replace
 
 ## Credits
 This plugin was inspired by [grunt-cache-bust](https://github.com/hollandben/grunt-cache-bust)

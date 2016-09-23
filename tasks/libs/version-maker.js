@@ -21,15 +21,20 @@ module.exports = function(grunt) {
 
     taskReference: null,
 
+    // Defaults
     options: {
-      hashType: "timestamp", // git, npm, maven, timestamp
+      // Options Include: git, npm, maven, timestamp
+      hashType: "timestamp",
+      // Executes the git command: "git rev-parse --verify HEAD"
       pathToGitRepo: "./",
-      pathToPom: "pom.xml"
+      // Reads the Maven version number
+      pathToPom: "./pom.xml",
+      // Reads the NPM Project version number
+      pathToNpm: "./package.json"
     },
 
     calcHash: function(callback) {
-      var promises = [], Instance = this,
-      hashFunction, promise, hash = false;
+      var promises = [], hashFunction;
       hashFunction = this.options.hashType;
       hashFunction = hashFunction.charAt(0).toUpperCase() + hashFunction.slice(1);
       /*
@@ -44,11 +49,14 @@ module.exports = function(grunt) {
 
     getTimestampHash: function() {
       var timestamp = Date.now() / 1000 | 0;
+      timestamp = Number(timestamp);
       return Promise.resolve( timestamp );
     },
 
     getNpmHash: function() {
-      var pkg = grunt.file.readJSON('package.json');
+      //grunt.log.writeln(["this.options.pathToNpm: "+ this.options.pathToNpm]);
+      var version, pkg = grunt.file.readJSON(this.options.pathToNpm);
+      version = String(pkg.version);
       return Promise.resolve( pkg.version );
     },
 
@@ -62,7 +70,7 @@ module.exports = function(grunt) {
     },
 
     getMavenHash: function() {
-      var opts, done, version;
+      var opts, version;
 
       // The required options, including the filePath.
       // Other parsing options from https://github.com/Leonidas-from-XIV/node-xml2js#options
@@ -74,9 +82,9 @@ module.exports = function(grunt) {
         pomParser.parse(opts, function(err, pomResponse) {
           if (err) {
             grunt.log.error(["ERROR: " + err]);
-            return reject(ex);
+            return reject(err);
           }else{
-            version = pomResponse.pomObject.project.version
+            version = String(pomResponse.pomObject.project.version);
             return resolve( version );
           }
         });
