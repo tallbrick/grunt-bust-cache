@@ -1,4 +1,5 @@
 /*jshint node: true, esversion: 6, bitwise: false */
+/* eslint-disable global-require */
 
 module.exports = function(grunt) {
   'use strict';
@@ -42,7 +43,7 @@ module.exports = function(grunt) {
         this["get"+hashFunction+"Hash"]().then(callback, grunt.warn);
       }
       */
-      promises.push( this["get"+hashFunction+"Hash"]() );
+      promises.push( this["get" + hashFunction + "Hash"]() );
 
       Promise.all(promises).then(callback, grunt.warn);
     },
@@ -54,7 +55,7 @@ module.exports = function(grunt) {
     },
 
     getNpmHash: function() {
-      //grunt.log.writeln(["this.options.pathToNpm: "+ this.options.pathToNpm]);
+      //grunt.log.writeln(["this.options.pathToNpm: " + this.options.pathToNpm]);
       var version, pkg = grunt.file.readJSON(this.options.pathToNpm);
       version = String(pkg.version);
       return Promise.resolve( pkg.version );
@@ -75,7 +76,7 @@ module.exports = function(grunt) {
       // The required options, including the filePath.
       // Other parsing options from https://github.com/Leonidas-from-XIV/node-xml2js#options
       opts = {
-        filePath: this.options.pathToPom,
+        filePath: this.options.pathToPom
       };
       
       return new Promise(function(resolve, reject) {

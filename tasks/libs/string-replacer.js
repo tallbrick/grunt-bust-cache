@@ -1,6 +1,6 @@
 /*jshint node: true, esversion: 6, bitwise: false */
 
-module.exports = function(grunt) {
+module.exports = function() {
   'use strict';
   
   var CacheBuster;
@@ -25,9 +25,6 @@ module.exports = function(grunt) {
     },
 
     updateFileContent: function(fileContent) {
-      grunt.log.writeln(["rjs: "+ this.options.requireJs]);
-      grunt.log.writeln(["js: "+ this.options.javascript]);
-      grunt.log.writeln(["css: "+ this.options.css]);
       
       if(this.options.requireJs){
         fileContent = this.bustRequireJs(fileContent);
@@ -47,24 +44,24 @@ module.exports = function(grunt) {
     // Add requirejs config which includes hash string
     bustRequireJs: function(fileContent) {
       var hash;
-      hash = '<script>var require = { urlArgs: "'+ this.options.urlKey +'='+ this.options.versionString+'" };</script>';
-      fileContent = fileContent.replace(/(<script data-main=(.*(require.js)*.)><\/script>)/gim, hash +"$1");
+      hash = '<script>var require = { urlArgs: "' + this.options.urlKey + '=' + this.options.versionString + '" };</script>';
+      fileContent = fileContent.replace(/(<script data-main=(.*(require.js)*.)><\/script>)/gim, hash + "$1");
       return fileContent;
     },
 
     // Add hash string to JS includes
     bustJavaScript: function(fileContent) {
       var hash;   
-      hash = '?'+this.options.urlKey+'='+ this.options.versionString;
-      fileContent = fileContent.replace(/(<script.*)(\w+\.js)(.*>.*<\/script>)/gim, "$1$2"+ hash +"$3");
+      hash = '?' + this.options.urlKey + '=' + this.options.versionString;
+      fileContent = fileContent.replace(/(<script.*)(\w+\.js)(.*>.*<\/script>)/gim, "$1$2" + hash + "$3");
       return fileContent;
     },
 
     // Add hash string to CSS includes
     bustCss: function(fileContent) {
       var hash;   
-      hash = '?'+this.options.urlKey+'='+ this.options.versionString;
-      fileContent = fileContent.replace(/(<link.*)(\w+\.css)(.*\/>)/gim, "$1$2"+ hash +"$3");
+      hash = '?' + this.options.urlKey + '=' + this.options.versionString;
+      fileContent = fileContent.replace(/(<link.*)(\w+\.css)(.*\/>)/gim, "$1$2" + hash + "$3");
       return fileContent;
     }
   };
