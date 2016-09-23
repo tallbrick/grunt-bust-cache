@@ -38,6 +38,7 @@ var getRequireJsConfig = function(str){
 describe("grunt-bust-cache", function() {
 
   it("should version CSS URLs", function(done) {
+    this.timeout(5000);
     exec('grunt bustCache:css', {
       cwd: path.join(__dirname, '..')
     }, function() {
@@ -56,6 +57,7 @@ describe("grunt-bust-cache", function() {
   });
 
   it("and should version JavaScript URLs", function(done) {
+    this.timeout(5000);
     exec('grunt bustCache:javascript', {
       cwd: path.join(__dirname, '..')
     }, function() {
@@ -74,6 +76,7 @@ describe("grunt-bust-cache", function() {
   });
 
   it("and should version RequireJS configurations", function(done) {
+    this.timeout(5000);
     exec('grunt bustCache:requireJs', {
       cwd: path.join(__dirname, '..')
     }, function() {
@@ -91,6 +94,7 @@ describe("grunt-bust-cache", function() {
   });
 
   it("and should version a single file", function(done) {
+    this.timeout(5000);
     exec('grunt bustCache:singleFile', {
       cwd: path.join(__dirname, '..')
     }, function() {
@@ -102,6 +106,7 @@ describe("grunt-bust-cache", function() {
   });
 
   it("and should version multiple file pairs", function(done) {
+    this.timeout(5000);
     exec('grunt bustCache:multiplePairs', {
       cwd: path.join(__dirname, '..')
     }, function() {
