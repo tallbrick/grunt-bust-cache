@@ -9,6 +9,31 @@ var assert = require('assert'),
   exec = require('child_process').exec;
 
 
+var testArraysMatch = function(needles, haystack){
+  var x, l, match = true;
+  if(needles && needles.length){
+    for(x=0, l=needles.length;x<l;x++){
+      if(haystack.indexOf(needles[x]) === -1){
+        match = false;
+      }
+    }
+  }
+  return match;
+};
+var getCss = function(str){
+  str = str.match(/<link.*\w+\.css.*\/>/gim);
+  return (str !== null)? str : "";
+};
+var getJavaScript = function(str){
+  str = str.match(/<script.*\w+\.js.*>.*<\/script>/gim);
+  return (str !== null)? str : "";
+};
+var getRequireJsConfig = function(str){
+  str = str.match(/<script>var require = { urlArgs: ".*" };<\/script>/gim);
+  return (str !== null)? str : "";
+};
+
+
 // Tests Suites
 describe("grunt-bust-cache", function() {
 
@@ -16,9 +41,16 @@ describe("grunt-bust-cache", function() {
     exec('grunt bustCache:css', {
       cwd: path.join(__dirname, '..')
     }, function() {
-      var expect = grunt.file.read('tests/fixtures/source.html'),
-        result = grunt.file.read('target/css.html');
+      var expect, result;
+      expect = grunt.file.read('tests/fixtures/source.html');
+      result = grunt.file.read('target/css.html');
+
+      // Confirm that the file was versioned
       assert.notEqual(result, expect);
+
+      // Confirm that ONLY the CSS Strings are versioned
+      assert(testArraysMatch(getJavaScript(expect), getJavaScript(result)));
+      assert(testArraysMatch(getRequireJsConfig(expect), getRequireJsConfig(result)));
       done();
     });
   });
@@ -27,9 +59,16 @@ describe("grunt-bust-cache", function() {
     exec('grunt bustCache:javascript', {
       cwd: path.join(__dirname, '..')
     }, function() {
-      var expect = grunt.file.read('tests/fixtures/source.html'),
+      var expect, result;
+      expect = grunt.file.read('tests/fixtures/source.html');
       result = grunt.file.read('target/javascript.html');
-        assert.notEqual(result, expect);
+
+      // Confirm that the file was versioned
+      assert.notEqual(result, expect);
+
+      // Confirm that ONLY the JavaScript strings are versioned
+      assert(testArraysMatch(getCss(expect), getCss(result)));
+      assert(testArraysMatch(getRequireJsConfig(expect), getRequireJsConfig(result)));
       done();
     });
   });
@@ -38,9 +77,15 @@ describe("grunt-bust-cache", function() {
     exec('grunt bustCache:requireJs', {
       cwd: path.join(__dirname, '..')
     }, function() {
-      var expect = grunt.file.read('tests/fixtures/source.html'),
+      var expect, result;
+      expect = grunt.file.read('tests/fixtures/source.html');
       result = grunt.file.read('target/requireJs.html');
-        assert.notEqual(result, expect);
+
+      // Confirm that the file was versioned
+      assert.notEqual(result, expect);
+
+      // Confirm that ONLY the RequireJS strings are versioned
+      assert(testArraysMatch(getCss(expect), getCss(result)));
       done();
     });
   });

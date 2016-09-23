@@ -1,6 +1,6 @@
 /*jshint node: true, esversion: 6, bitwise: false */
 
-module.exports = function() {
+module.exports = function(grunt) {
   'use strict';
   
   var CacheBuster;
@@ -18,13 +18,16 @@ module.exports = function() {
 
     options: {
       urlKey: "v",
-      requireJs: false,
-      javascript: true,
       css: true,
+      javascript: true,
+      requireJs: false,
       versionString: ""
     },
 
     updateFileContent: function(fileContent) {
+      grunt.log.writeln(["rjs: "+ this.options.requireJs]);
+      grunt.log.writeln(["js: "+ this.options.javascript]);
+      grunt.log.writeln(["css: "+ this.options.css]);
       
       if(this.options.requireJs){
         fileContent = this.bustRequireJs(fileContent);

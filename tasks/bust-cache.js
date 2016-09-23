@@ -12,6 +12,7 @@ module.exports = function(grunt) {
   defaultOptions = {
     css: true,
     requireJs: false,
+    javascript: true,
     urlKey: "v",
 
     hashType: "timestamp", // git, npm, maven, timestamp
@@ -30,8 +31,9 @@ module.exports = function(grunt) {
         // Calculate the version/hash
         version = new VersionMaker(options);
         version.calcHash(function(hash) {
-          options.versionString = hash;
+          options.versionString = hash[0];
           grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
+          grunt.log.writeln(["Object: "+ JSON.stringify(hash)]);
 
           resolve( options );
         });

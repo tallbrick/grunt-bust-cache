@@ -54,6 +54,7 @@ module.exports = function(grunt) {
     },
 
     getNpmHash: function() {
+      //grunt.log.writeln(["this.options.pathToNpm: "+ this.options.pathToNpm]);
       var version, pkg = grunt.file.readJSON(this.options.pathToNpm);
       version = String(pkg.version);
       return Promise.resolve( pkg.version );

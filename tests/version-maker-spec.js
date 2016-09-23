@@ -33,8 +33,8 @@ describe("A timestamp", function() {
       try{
         maker = new VersionMaker({hashType: "timestamp"});
         maker.calcHash(function(hash) {
-          version = Number(hash);
-          //grunt.log.writeln(["testIsInteger("+version+"): "+ testIsInteger(version)]);
+          version = hash[0];
+          //grunt.log.writeln(["testIsInteger: "+ testIsInteger(version)]);
           resolve( hash );
         });
       }catch(e){ reject(e); }
@@ -67,7 +67,7 @@ describe("A maven project version", function() {
           pathToPom: "./tests/fixtures/pom.xml"
         });
         maker.calcHash(function(hash) {
-          version = String(hash);
+          version = hash[0];
           //grunt.log.writeln(["testIsString: "+ (typeof version)]);
           resolve( hash );
         });
@@ -101,7 +101,7 @@ describe("A git commit hash", function() {
           pathToGitRepo: "./"
         });
         maker.calcHash(function(hash) {
-          version = String(hash);
+          version = hash[0];
           resolve( hash );
         });
       }catch(e){ reject(e); }
@@ -131,7 +131,7 @@ describe("A npm project version", function() {
       try{
         maker = new VersionMaker({hashType: "npm", pathToNpm: "./package.json"});
         maker.calcHash(function(hash) {
-          version = String(hash);
+          version = hash[0];
           resolve( hash );
         });
       }catch(e){ reject(e); }

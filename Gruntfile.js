@@ -62,7 +62,7 @@ module.exports = function(grunt) {
     },
 
     bustCache: {
-      // Positive Tests
+      // Version Types
       timestamp: {
         options: { hashType: "timestamp" },
         src: "<%= pathTo.fixtures %>/source.html",
@@ -89,21 +89,37 @@ module.exports = function(grunt) {
         src: "<%= pathTo.fixtures %>/source.html",
         dest: "<%= pathTo.build %>/git.html"
       },
+
+      // Replacement Types
       css: {
-        options: { css: true },
+        options: {
+          css: true,
+          requireJs: false,
+          javascript: false
+        },
         src: "<%= pathTo.fixtures %>/source.html",
         dest: "<%= pathTo.build %>/css.html"
       },
       requireJs: {
-        options: { requireJs: true },
+        options: {
+          css: false,
+          requireJs: true,
+          javascript: false
+        },
         src: "<%= pathTo.fixtures %>/source.html",
         dest: "<%= pathTo.build %>/requireJs.html"
       },
       javascript: {
-        options: { javascript: true },
+        options: {
+          css: false,
+          requireJs: false,
+          javascript: true
+        },
         src: "<%= pathTo.fixtures %>/source.html",
         dest: "<%= pathTo.build %>/javascript.html"
       },
+
+      // Option configs
       singleFile: {
         src: "<%= pathTo.build %>/singleFile.html"
       },
@@ -115,6 +131,7 @@ module.exports = function(grunt) {
           }
         ]
       },
+      
       // Negative Tests
       noFiles: {},
       badConfig: {
