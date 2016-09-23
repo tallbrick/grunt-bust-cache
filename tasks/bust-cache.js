@@ -1,4 +1,5 @@
 /*jshint node: true, esversion: 6, bitwise: false */
+/* eslint-disable global-require */
 
 module.exports = function(grunt) {
   'use strict';
@@ -32,8 +33,8 @@ module.exports = function(grunt) {
         version = new VersionMaker(options);
         version.calcHash(function(hash) {
           options.versionString = hash[0];
-          grunt.log.writeln(["cache-buster suffix: "+ options.versionString]); 
-          grunt.log.writeln(["Object: "+ JSON.stringify(hash)]);
+          grunt.log.writeln(["cache-buster suffix: " + options.versionString]); 
+          grunt.log.writeln(["Object: " + JSON.stringify(hash)]);
 
           resolve( options );
         });
@@ -73,7 +74,7 @@ module.exports = function(grunt) {
     });
 
     if( filesUpdated.length > 0 ){
-      message = "Files Updated: "+ filesUpdated.join('\n');
+      message = "Files Updated: " + filesUpdated.join('\n');
     }else{
       message = "No Files updated";
     }
