@@ -3,7 +3,7 @@
 
 
 ### Getting Started
-This plugin requires Node `4.x.x` and Grunt `1.x.x`
+This plugin requires minimum versions of Node 4 (and up) and Grunt 1 (and up).
 
 
 ### Install
