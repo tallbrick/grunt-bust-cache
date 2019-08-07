@@ -20,8 +20,9 @@ var testIsString = function(value){
 var testValueGreaterThenZero = function(value){
   return (value > 0);
 };
-var testLengthGreaterThenZero = function(string){
-  return (string.length > 0);
+var testLengthGreaterThenZero = function(str){
+  var string = String(str);
+  return (string.toString().length > 0);
 };
 
 // Tests Suites
