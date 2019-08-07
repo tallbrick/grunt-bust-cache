@@ -37,6 +37,8 @@ module.exports = function(grunt) {
     calcHash: function(callback) {
       var promises = [], hashFunction;
       hashFunction = this.options.hashType;
+      
+      // Create dynamic call to the correct getter method
       hashFunction = hashFunction.charAt(0).toUpperCase() + hashFunction.slice(1);
       /*
       if(typeof "get"+hashFunction+"Hash" === "function"){
