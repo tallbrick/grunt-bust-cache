@@ -1,7 +1,7 @@
 {
   "name": "grunt-bust-cache",
   "description": "Grunt task to automate cache busting",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": {
     "name": "Chris Bricker"
   },
