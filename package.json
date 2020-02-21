@@ -1,7 +1,7 @@
 {
   "name": "grunt-bust-cache",
   "description": "Grunt task to automate cache busting",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": {
     "name": "Chris Bricker"
   },
@@ -20,7 +20,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-mocha-test": "^0.12.0",
-    "gruntify-eslint": "^3.1.0",
+    "gruntify-eslint": "^5.0.0",
     "mocha": "^5.2.0"
   },
   "keywords": [
