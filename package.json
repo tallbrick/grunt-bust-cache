@@ -11,8 +11,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "pom-parser": "^1.1.0",
-    "gitty": "^3.3.3"
+    "gitty": "^3.7.1",
+    "pom-parser": "^1.2.0"
   },
   "devDependencies": {
     "grunt": "^1.0.0",

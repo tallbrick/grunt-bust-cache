@@ -1,4 +1,4 @@
-# grunt-bust-cache [![GitHub version](https://badge.fury.io/gh/tallbrick%2Fgrunt-bust-cache.svg)](https://badge.fury.io/gh/tallbrick%2Fgrunt-bust-cache) [![Build Status](https://travis-ci.org/tallbrick/grunt-bust-cache.svg?branch=master)](https://travis-ci.org/tallbrick/grunt-bust-cache)
+# grunt-bust-cache [![npm version](https://badge.fury.io/js/grunt-bust-cache.svg)](https://badge.fury.io/js/grunt-bust-cache) [![Build Status](https://travis-ci.org/tallbrick/grunt-bust-cache.svg?branch=master)](https://travis-ci.org/tallbrick/grunt-bust-cache)
 > Grunt task to automate your cache-bust configuration
 
 
